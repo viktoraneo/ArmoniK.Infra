@@ -172,14 +172,14 @@ Gets the context to execute conf named templates
  
 {{- define "armonik.conf.generateEnvFrom" }}
 {{- range $name := .envConfigmap }}
-      - configMapRef:
-          name: {{ $name }}
-          optional: false
+- configMapRef:
+    name: {{ $name }}
+    optional: false
 {{- end }}
 {{- range $name := .envSecret }}
-      - secretRef:
-          name: {{ $name }}
-          optional: false
+- secretRef:
+    name: {{ $name }}
+    optional: false
 {{- end }}
 {{- end -}}
 

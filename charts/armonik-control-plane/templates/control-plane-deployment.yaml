@@ -37,10 +37,8 @@ spec:
               protocol: {{ .protocol }}
             {{- end }}
           {{- if .Values.env }}
-          env:
-            {{- include "armonik.conf.generateControlEnv" $conf | nindent 12 }}
-          envFrom:
-            {{- include "armonik.conf.generateControlEnvFrom" $conf | nindent 12 }}
+          env: {{- include "armonik.conf.generateControlEnv" $conf | nindent 12 }}
+          envFrom: {{- include "armonik.conf.generateControlEnvFrom" $conf | nindent 12 }}
           {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -53,10 +51,8 @@ spec:
           startupProbe:
           {{- toYaml .Values.startupProbe | nindent 12 }}
           {{- end }}
-          volumeMounts:
-            {{- include "armonik.conf.generateVolumeMounts" $conf | nindent 12 }}
-      volumes:
-        {{- include "armonik.conf.generateVolumes" $conf | nindent 12 }}
+          volumeMounts: {{- include "armonik.conf.generateVolumeMounts" $conf | nindent 12 }}
+      volumes: {{- include "armonik.conf.generateVolumes" $conf | nindent 8 }}
       {{- $imagePullSecrets := .Values.global.imagePullSecrets | default .Values.imagePullSecrets }}
       {{- if $imagePullSecrets }}
       {{- with $imagePullSecrets }}
