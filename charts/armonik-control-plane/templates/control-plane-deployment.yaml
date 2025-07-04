@@ -1,3 +1,7 @@
+{{- $conf := list
+    (include "armonik.conf.control" $ | fromYaml)
+    .Values.conf
+  | include "armonik.conf.merge" | fromYaml -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,29 +38,9 @@ spec:
             {{- end }}
           {{- if .Values.env }}
           env:
-            {{- range .Values.env }}
-            - name: {{ .name }}
-              valueFrom:
-                {{- toYaml .valueFrom | nindent 16 }}
-            {{- end }}
-          {{- end }}
-          {{- if .Values.envFrom }}
+            {{- include "armonik.conf.generateControlEnv" $conf | nindent 12 }}
           envFrom:
-            {{- if .Values.envFrom.secretRef }}
-            {{- range .Values.envFrom.secretRef }}
-            - secretRef:
-                name: {{ . }}
-                optional: false
-            {{- end }}
-            {{- end }}
-            {{- if .Values.envFrom.configMapRef }}
-            {{- range .Values.envFrom.configMapRef }}
-            - configMapRef:
-                name: {{ . }}
-                optional: false
-            {{- end }}
-            {{- end }}
-          {{- end }}
+            {{- include "armonik.conf.generateControlEnvFrom" $conf | nindent 12 }}
           {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -69,24 +53,10 @@ spec:
           startupProbe:
           {{- toYaml .Values.startupProbe | nindent 12 }}
           {{- end }}
-          {{- if .Values.volumes }}
           volumeMounts:
-          {{- range $key, $volume := .Values.volumes }}
-            - name: {{ $key }}
-              mountPath: {{ $volume.mountPath }}
-              readOnly: true
-          {{- end }}
-          {{- end }}
-      {{- if .Values.volumes }}
+            {{- include "armonik.conf.generateVolumeMounts" $conf | nindent 12 }}
       volumes:
-        {{- range $key, $volume := .Values.volumes }}
-        {{- if $volume.enabled }}
-        - name: {{ $key }}
-          secret:
-            secretName: {{ $volume.secretName }}
-        {{- end }}
-        {{- end }}
-      {{- end }}
+        {{- include "armonik.conf.generateVolumes" $conf | nindent 12 }}
       {{- $imagePullSecrets := .Values.global.imagePullSecrets | default .Values.imagePullSecrets }}
       {{- if $imagePullSecrets }}
       {{- with $imagePullSecrets }}
