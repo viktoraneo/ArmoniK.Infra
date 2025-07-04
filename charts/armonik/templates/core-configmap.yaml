@@ -2,6 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ default "core-configmap" .Values.config.core.name }}
+  namespace: {{ $.Release.Namespace }}
+  annotations:
+    component: "core"
 data:
   {{ include "armonik.queue" . }}
   {{ if .Values.config.core.data }}
@@ -55,4 +58,9 @@ data:
   #Redis__SslHost: 127.0.0.1
   Redis__Timeout: "30000"
   Redis__TtlTimeSpan: 1.00:00:00  
+  {{- end }}
+  
+  {{ $conf := include "armonik.conf.core" $ | fromYaml | include "armonik.conf.materialize" | fromYaml }}
+  {{ with $conf }}
+  {{ toYaml . | nindent 2 }}
   {{- end }}
