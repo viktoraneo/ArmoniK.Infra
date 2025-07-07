@@ -8,7 +8,7 @@
         (include "armonik.conf.core" . | fromYaml)
         (include "armonik.conf.log" . | fromYaml)
         (include "armonik.conf.controlHelper" $ctx | fromYaml)
-        Values.conf
+        $ctx.Values.control
       | include "armonik.conf.merge"
   -}}
 {{- end -}}
