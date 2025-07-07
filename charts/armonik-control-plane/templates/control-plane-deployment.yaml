@@ -36,7 +36,6 @@ spec:
               containerPort: {{ .containerPort }}
               protocol: {{ .protocol }}
             {{- end }}{{/* range .Values.ports */}}
-          {{- if .Values.env }}
           env: {{- include "armonik.conf.generateEnv" $conf | nindent 12 }}
           envFrom: {{- include "armonik.conf.generateEnvFrom" $conf | nindent 12 }}
           {{- if .Values.resources }}
