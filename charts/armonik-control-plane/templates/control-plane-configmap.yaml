@@ -20,5 +20,7 @@ data:
   {{- range $key, $value := .Values.config.controlPlane.data }}
   {{ $key }}: {{ $value | quote }}
   {{- end }}
-
-  {{ include "armonik.conf.control" | fromYaml | include "armonik.conf.materialize" | nindent 2 }}
+  {{ $conf := include "armonik.conf.control" $ | fromYaml | include "armonik.conf.materialize" | fromYaml }}
+  {{ with $conf }}
+  {{ toYaml . | nindent 2 }}
+  {{- end }}
