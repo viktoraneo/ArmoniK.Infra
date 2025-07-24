@@ -26,6 +26,6 @@ env:
 {{- end -}}
 
 {{- define "armonik.conf.log" -}}
-  {{- $configmap := list .Values.config.log.name . | include "armonik.conf.configmap" -}}
+  {{- $configmap := list "log-configmap" . | include "armonik.conf.configmap" -}}
   {{- include "armonik.conf.logRaw" . | fromYaml | list $configmap | include "armonik.conf.materialized" -}}
 {{- end -}}

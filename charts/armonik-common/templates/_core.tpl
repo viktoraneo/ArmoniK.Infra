@@ -15,6 +15,6 @@
 {{- end -}}
 
 {{- define "armonik.conf.core" -}}
-  {{- $configmap := list .Values.config.core.name . | include "armonik.conf.configmap" -}}
+  {{- $configmap := list "core-configmap" . | include "armonik.conf.configmap" -}}
   {{- include "armonik.conf.coreRaw" . | fromYaml | list $configmap | include "armonik.conf.materialized" -}}
 {{- end -}}
