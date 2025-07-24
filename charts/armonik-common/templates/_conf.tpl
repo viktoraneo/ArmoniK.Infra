@@ -146,7 +146,7 @@ Gets the context to execute conf named templates
 {{- define "armonik.conf.configmap" -}}
   {{- $configmap := index . 0 -}}
   {{- $conf := index . 1 | deepCopy -}}
-  pouet-{{- $configmap -}}
+  {{- $configmap -}}
 {{- end -}}{{/* define "armonik.conf.configmap" */}}
 
 {{- define "armonik.conf.generateEnv" }}
