@@ -24,7 +24,3 @@ data:
   Serilog__MinimumLevel__Override__Microsoft.Extensions.Http.DefaultHttpClientFactory: Warning
   Serilog__MinimumLevel__Override__Serilog.AspNetCore.RequestLoggingMiddleware: Warning
   {{- end }}
-  {{ $conf := include "armonik.conf.log" $ | fromYaml | include "armonik.conf.materialize" | fromYaml }}
-  {{ with $conf }}
-  {{ toYaml . | nindent 2 }}
-  {{- end }}
